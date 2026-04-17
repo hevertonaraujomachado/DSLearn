@@ -12,3 +12,5 @@ INSERT INTO tb_user_role (user_id, role_id) VALUES (2, 2);
 INSERT INTO tb_user_role (user_id, role_id) VALUES (3, 1);
 INSERT INTO tb_user_role (user_id, role_id) VALUES (3, 2);
 INSERT INTO tb_user_role (user_id, role_id) VALUES (3, 3);
+
+INSERT INTO tb_course(name,img_Uri, img_Gray_Uri) VALUES ('Bootcamp HTML','https://cdn.prod.website-files.com/643507075046cf6dcb169402/67298d46b568158fb1f1ad65_cert-iv-web-development-671ed6ead8d30.webp', 'https://liveyourmessage.com/wp-content/uploads/2024/01/RANK-1-700x394.png');

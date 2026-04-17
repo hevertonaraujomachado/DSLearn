@@ -3,6 +3,11 @@ package dev.superior.dslearn.entities;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 @Entity
 @Table(name = "tb_course")
 public class Course {
@@ -14,12 +19,10 @@ public class Course {
     private String imgUri;
     private String imgGrayUri;
 
+    @OneToMany(mappedBy = "course")
+    private List <Offer> offers = new ArrayList<>();
 
-   // @ManyToMany
-   // @JoinTable(name = "",
-         //   joinColumns = @JoinColumn(name = ""),
-          //  inverseJoinColumns = @JoinColumn(name = ""))
-    //Set<Category> categories = new HashSet<>();
+
 
     public Course() {
 
@@ -75,5 +78,13 @@ public class Course {
     @Override
     public int hashCode() {
         return id.hashCode();
+    }
+
+    public List<Offer> getOffers() {
+        return offers;
+    }
+
+    public void setOffers(List<Offer> offers) {
+        this.offers = offers;
     }
 }

@@ -3,6 +3,8 @@ package dev.superior.dslearn.entities;
 import jakarta.persistence.*;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "tb_offer")
@@ -18,16 +20,11 @@ public class Offer {
     @JoinColumn(name = "course_id")
     private Course course;
 
-    public Offer () {
+    @OneToMany(mappedBy = "offer")
+    private List<Resource> resources = new ArrayList<>();
 
-    }
+    public Offer() {
 
-    public Offer(Long id, String edition, Instant startMoment, Instant endMoment, Course course) {
-        this.id = id;
-        this.edition = edition;
-        this.startMoment = startMoment;
-        this.endMoment = endMoment;
-        this.course = course;
     }
 
     public Long getId() {
@@ -70,16 +67,24 @@ public class Offer {
         this.course = course;
     }
 
+    public List<Resource> getResources() {
+        return resources;
+    }
+
+    public void setResources(List<Resource> resources) {
+        this.resources = resources;
+    }
+
     @Override
     public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-
+        if (this == o) return true;
+        if (!(o instanceof Offer)) return false;
         Offer offer = (Offer) o;
-        return id.equals(offer.id);
+        return id != null && id.equals(offer.id);
     }
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return 31;
     }
 }

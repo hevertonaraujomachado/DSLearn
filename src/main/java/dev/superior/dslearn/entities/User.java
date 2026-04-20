@@ -2,7 +2,9 @@ package dev.superior.dslearn.entities;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -12,7 +14,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String Name;
+    private String name;
     @Column(unique = true)
     private String email;
     private String password;
@@ -23,16 +25,20 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
-    public User () {
+    @OneToMany(mappedBy = "user")
+    private List<Notification> notifications = new ArrayList<>();
+
+    public User() {
 
     }
 
-    public User(Long id, String tName, String email, String password, Set<Role> roles) {
+    public User(Long id, String name, String email, String password, Set<Role> roles, List<Notification> notifications) {
         this.id = id;
-        this.Name = tName;
+        this.name = name;
         this.email = email;
         this.password = password;
         this.roles = roles;
+        this.notifications = notifications;
     }
 
     public Long getId() {
@@ -43,12 +49,12 @@ public class User {
         this.id = id;
     }
 
-    public String gettName() {
-        return Name;
+    public String getName() {
+        return name;
     }
 
-    public void settName(String tName) {
-        this.Name = tName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {
@@ -75,16 +81,24 @@ public class User {
         this.roles = roles;
     }
 
+    public List<Notification> getNotifications() {
+        return notifications;
+    }
+
+    public void setNotifications(List<Notification> notifications) {
+        this.notifications = notifications;
+    }
+
     @Override
     public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
         User user = (User) o;
-        return id.equals(user.id);
+        return id != null && id.equals(user.id);
     }
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return 31;
     }
 }

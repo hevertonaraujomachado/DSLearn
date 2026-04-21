@@ -14,6 +14,7 @@ public class Notification {
     private Long id;
 
     private String text;
+    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant moment;
 
     @Column(name = "read_status")

@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "tb_offer")
@@ -13,8 +14,10 @@ public class Offer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String edition;
+
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant startMoment;
+
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant endMoment;
 
@@ -25,8 +28,19 @@ public class Offer {
     @OneToMany(mappedBy = "offer")
     private List<Resource> resources = new ArrayList<>();
 
-    public Offer() {
+    @OneToMany(mappedBy = "offer")
+    private List<Topic> topics = new ArrayList<>();
 
+    public Offer() {
+    }
+
+    public Offer(Long id, String edition, Instant startMoment, Instant endMoment, Course course) {
+        super();
+        this.id = id;
+        this.edition = edition;
+        this.startMoment = startMoment;
+        this.endMoment = endMoment;
+        this.course = course;
     }
 
     public Long getId() {
@@ -73,20 +87,24 @@ public class Offer {
         return resources;
     }
 
-    public void setResources(List<Resource> resources) {
-        this.resources = resources;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Offer)) return false;
-        Offer offer = (Offer) o;
-        return id != null && id.equals(offer.id);
+    public List<Topic> getTopics() {
+        return topics;
     }
 
     @Override
     public int hashCode() {
-        return 31;
+        return Objects.hash(id);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Offer other = (Offer) obj;
+        return Objects.equals(id, other.id);
     }
 }

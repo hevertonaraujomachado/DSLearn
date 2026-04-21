@@ -1,12 +1,10 @@
 package dev.superior.dslearn.entities;
 
 import dev.superior.dslearn.entities.pk.EnrollmentPK;
-import jakarta.persistence.Column;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.time.Instant;
+import java.util.*;
 
 @Entity
 @Table(name = "tb_enrollment")
@@ -22,31 +20,43 @@ public class Enrollment {
     private boolean available;
     private boolean onlyUpdate;
 
+    @ManyToMany(mappedBy = "enrollmentsDone")
+    private Set<Lesson> lessonsDone = new HashSet<>();
+
+    @OneToMany(mappedBy = "enrollment")
+    private List<Deliver> deliveries = new ArrayList<>();
+
 
     public Enrollment() {
 
     }
 
-    public Enrollment(User user, Offer offer, Instant enrollMoment, Instant refundMoment, boolean available, boolean onlyUpdate) {
-        this.id = id;
+    public Enrollment(User user, Offer offer, Instant enrollMoment, Instant refundMoment, boolean available,
+                      boolean onlyUpdate) {
+        super();
         id.setUser(user);
         id.setOffer(offer);
+        this.enrollMoment = enrollMoment;
         this.refundMoment = refundMoment;
         this.available = available;
         this.onlyUpdate = onlyUpdate;
     }
-public  User getStudent() {
-        return  id.getUser();
-}
-public void setStudent(User user) {
+
+    public User getStudent() {
+        return id.getUser();
+    }
+
+    public void setStudent(User user) {
         id.setUser(user);
-}
-public Offer getOffer() {
+    }
+
+    public Offer getOffer() {
         return id.getOffer();
-}
-public void setOffer(Offer offer) {
+    }
+
+    public void setOffer(Offer offer) {
         id.setOffer(offer);
-}
+    }
 
     public Instant getEnrollMoment() {
         return enrollMoment;
@@ -80,4 +90,28 @@ public void setOffer(Offer offer) {
         this.onlyUpdate = onlyUpdate;
     }
 
+    public Set<Lesson> getLessonsDone() {
+        return lessonsDone;
+    }
+
+    public List<Deliver> getDeliveries() {
+        return deliveries;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Enrollment other = (Enrollment) obj;
+        return Objects.equals(id, other.id);
+    }
 }

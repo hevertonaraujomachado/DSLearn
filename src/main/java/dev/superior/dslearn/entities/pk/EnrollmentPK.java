@@ -6,6 +6,8 @@ import jakarta.persistence.Embeddable;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
+import java.util.Objects;
+
 @Embeddable
 public class EnrollmentPK {
 
@@ -21,6 +23,7 @@ public class EnrollmentPK {
     }
 
     public EnrollmentPK(User user, Offer offer) {
+        super();
         this.user = user;
         this.offer = offer;
     }
@@ -42,17 +45,19 @@ public class EnrollmentPK {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-
-        EnrollmentPK that = (EnrollmentPK) o;
-        return user.equals(that.user) && offer.equals(that.offer);
+    public int hashCode() {
+        return Objects.hash(offer, user);
     }
 
     @Override
-    public int hashCode() {
-        int result = user.hashCode();
-        result = 31 * result + offer.hashCode();
-        return result;
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        EnrollmentPK other = (EnrollmentPK) obj;
+        return Objects.equals(offer, other.offer) && Objects.equals(user, other.user);
     }
 }

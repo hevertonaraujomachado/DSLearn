@@ -3,37 +3,32 @@ package dev.superior.dslearn.entities;
 import jakarta.persistence.*;
 
 import java.time.Instant;
+import java.util.Objects;
 
 
 @Entity
-@Table(name = "tb_notifications")
+@Table(name = "tb_notification")
 public class Notification {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String text;
+
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant moment;
-
-    @Column(name = "read_status")
     private boolean read;
-
     private String route;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-
-
-
     public Notification() {
-
     }
 
     public Notification(Long id, String text, Instant moment, boolean read, String route, User user) {
+        super();
         this.id = id;
         this.text = text;
         this.moment = moment;
@@ -91,16 +86,19 @@ public class Notification {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Notification that = (Notification) o;
-        return id.equals(that.id);
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
     @Override
-    public int hashCode() {
-        return id.hashCode();
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Notification other = (Notification) obj;
+        return Objects.equals(id, other.id);
     }
 }
-
